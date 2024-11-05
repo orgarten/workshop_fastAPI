@@ -1,3 +1,4 @@
+import uvicorn
 from fastapi import FastAPI
 
 app = FastAPI()
@@ -18,3 +19,7 @@ async def say_hello(name: str):
 async def say_hello(name: str):
     """This path operation can be used with a query parameter `name`."""
     return {"message": f"Hello {name}"}
+
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)

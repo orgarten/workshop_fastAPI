@@ -5,14 +5,6 @@ from pydantic_settings import BaseSettings
 
 app = FastAPI()
 
-class AppSettings(BaseSettings):
-    version: str
-
-settings = AppSettings(version="0.5.0")
-
-@app.get("/version")
-async def get_version():
-    return settings.version
 
 class Address(BaseModel):
     street: str
@@ -58,3 +50,13 @@ def hello(name: str, response: Response):
 
     response.status_code = status.HTTP_400_BAD_REQUEST
     return {}
+
+
+class AppSettings(BaseSettings):
+    version: str
+
+settings = AppSettings(version="0.5.0")
+
+@app.get("/version")
+async def get_version():
+    return settings.version
