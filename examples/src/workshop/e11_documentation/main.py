@@ -6,7 +6,7 @@ from pydantic import BaseModel
 app = FastAPI(
     title="FastAPI Training",
     summary="A test API to show how to use docs in FastAPI",
-    description="This API is for demonstration purposes for the FastAPI workshop held online at GFU Cyrus AG. "
+    description="This API is for demonstration purposes for the FastAPI base_structure held online at GFU Cyrus AG. "
                 "This can be a lot of text to provide context for this API and their documentation. \n\n "
                 "Even more documentation to talk about the API.",
     version="1.0.0",

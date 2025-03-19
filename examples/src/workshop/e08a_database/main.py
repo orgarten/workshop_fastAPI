@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Form, Depends
 from typing import Annotated
-from sqlalchemy import create_engine,  String, select
+from sqlalchemy import create_engine,  String, select, delete
 from sqlalchemy.orm import sessionmaker, DeclarativeBase, Mapped, mapped_column, Session
 
 
@@ -15,7 +15,7 @@ class User(CustomBase):
     email: Mapped[str] = mapped_column(String(1024))
 
 
-engine = create_engine("sqlite+aiosqlite:///example.db")
+engine = create_engine("sqlite:///example.db")
 session_maker = sessionmaker(bind=engine)
 CustomBase.metadata.create_all(engine)
 
@@ -62,6 +62,12 @@ def get_user(
 
     return {"id": user.id, "name": user.name, "email": user.email}
 
+@app.delete("/user/{id}")
+def delete_user(id: int, db: Annotated[Session, Depends(get_session)]):
+    stmt = delete(User).where(User.id == id)
 
+    db.execute(stmt)
+    db.commit()
 
+    return {"message": "User deleted"}
 
