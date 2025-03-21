@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, Asyn
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, Session
 from contextlib import asynccontextmanager
 
-class CustomBase(DeclarativeBase):
+class CustomBase(AsyncAttrs, DeclarativeBase):
     pass
 
 class User(CustomBase):
@@ -17,11 +17,12 @@ class User(CustomBase):
 
 
 engine = create_async_engine("sqlite+aiosqlite:///example.db")
-session_maker = async_sessionmaker(bind=engine)
+session_maker = async_sessionmaker(bind=engine, expire_on_commit=False)
 
 
-def get_session() -> AsyncSession:
-    return session_maker()
+async def get_session() -> AsyncSession:
+    async with session_maker() as session:
+        yield session
 
 
 @asynccontextmanager

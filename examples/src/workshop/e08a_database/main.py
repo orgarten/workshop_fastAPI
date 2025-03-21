@@ -21,7 +21,8 @@ CustomBase.metadata.create_all(engine)
 
 
 def get_session() -> Session:
-    return session_maker()
+    with session_maker() as session:
+        yield
 
 app = FastAPI()
 
